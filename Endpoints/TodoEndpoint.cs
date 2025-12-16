@@ -25,6 +25,17 @@ group.MapGet("/", async(ApplicationDbContext db) =>
      return profile is null ? Results.NotFound() : Results.Ok(profile);
  });
 
+group.MapPut("/{id:int}", async (ApplicationDbContext db, int id, Profile input) =>
+{
+    var profile = await db.Profiles.FindAsync(id); 
+    if(profile is null) return Results.NotFound(); 
+
+    profile.About = input.About;
+   await db.SaveChangesAsync();
+   return Results.NoContent();
+})
     }
+
+    
     
 }
